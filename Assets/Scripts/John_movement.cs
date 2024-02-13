@@ -31,11 +31,7 @@ public class John_movement : MonoBehaviour
     void Update(){
 
         horizontal = Input.GetAxisRaw("Horizontal");
-        
-        if(Input.GetKeyDown(KeyCode.W)){
-
-            Jump();
-        }
+       
 
         if(Physics2D.Raycast(transform.position, Vector3.down,0.1f)){
             Grounded = true;
