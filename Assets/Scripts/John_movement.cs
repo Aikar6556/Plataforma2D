@@ -10,12 +10,19 @@ public class John_movement : MonoBehaviour
     public float JumpForce = 150;
     private float horizontal;
     private bool Grounded;
+       public int Health;
+
 
     private Rigidbody2D Rigidbody2D;
+    private Animator Animator;
+    public GameObject prefabBullet;
+    private float LastShoot;
+
     void Start ()
     {
 
         Rigidbody2D = GetComponent<Rigidbody2D>();
+        Animator = GetComponent<Animator>();
         
     }
 
@@ -31,6 +38,10 @@ public class John_movement : MonoBehaviour
     void Update(){
 
         horizontal = Input.GetAxisRaw("Horizontal");
+
+            Animator.SetBool("running",horizontal !=0.0f);
+
+                Debug.DrawRay(transform.position, Vector3.down * 0.1f, Color.red);
        
 
         if(Physics2D.Raycast(transform.position, Vector3.down,0.1f)){
@@ -44,11 +55,40 @@ public class John_movement : MonoBehaviour
             Jump();
         }
 
-        Debug.DrawRay(transform.position, Vector3.down * 0.1f, Color.red);
+     if(Input.GetKeyDown(KeyCode.Space) && Time.time > LastShoot + 0.25f){
+    Shoot();  
+    LastShoot = Time.time;
+
+}
+
+        if(horizontal < 0.0f) transform.localScale = new Vector3(-1.0f,1.0f,1.0f);
+        else if (horizontal > 0.0f) transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+
 
 
 
     }
+
+
+    private void Shoot(){
+
+         Vector3 direction;
+
+    if ( transform.localScale.x == 1.0f ) direction = Vector3.right;
+    else direction = Vector3.left;
+    // Pintamos el Prefab en scena, en la posición indicada y la rotación=0
+GameObject bullet = Instantiate(prefabBullet,transform.position + direction *0.1f, Quaternion.identity);
+
+bullet.GetComponent<BulletScript>().SetDirection(direction);
+
+}
+
+
+public void Hit(){
+    Health = Health - 1;
+    if(Health == 0) Destroy(gameObject);
+}
+
 
 
     private void Jump(){
