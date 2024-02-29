@@ -55,7 +55,7 @@ void OnTriggerEnter2D(Collider2D collision)
     John_movement john = collision.GetComponent<John_movement>();
     Grunt_Script grunt = collision.GetComponent<Grunt_Script>();
     if(john != null){ //hemos impactado con john
-    john.Hit();
+    john.Hit(1);
     DestroyBullet();
     }   
     if(grunt != null){//hemos impactado con grunt

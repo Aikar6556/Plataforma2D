@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class John_movement : MonoBehaviour
 {
@@ -10,18 +12,21 @@ public class John_movement : MonoBehaviour
     public float JumpForce = 150;
     private float horizontal;
     private bool Grounded;
-       public int Health;
+       private float Health;
 
 
     private Rigidbody2D Rigidbody2D;
     private Animator Animator;
     public GameObject prefabBullet;
     private float LastShoot;
+    public Image barraDeVida;
+    public float vidaMaxima;
 
     void Start ()
     {
 
         Rigidbody2D = GetComponent<Rigidbody2D>();
+        Health=vidaMaxima;
         Animator = GetComponent<Animator>();
         
     }
@@ -84,9 +89,17 @@ bullet.GetComponent<BulletScript>().SetDirection(direction);
 }
 
 
-public void Hit(){
-    Health = Health - 1;
-    if(Health == 0) Destroy(gameObject);
+public void Hit(float dano){
+
+    
+    Health = Health - dano;
+    if(Health == 0){
+        Destroy(gameObject);
+        SceneManager.LoadScene(2);
+
+
+    } 
+    barraDeVida.fillAmount = Health/vidaMaxima;
 }
 
 
@@ -95,4 +108,12 @@ public void Hit(){
 
         Rigidbody2D.AddForce(Vector2.up * JumpForce);
     }
+
+
+public float getVidaMaxima (){
+
+    return this.vidaMaxima;
+
+}
+
 }
