@@ -93,7 +93,7 @@ public void Hit(float dano){
 
     
     Health = Health - dano;
-    if(Health == 0){
+    if(Health <= 0){
         Destroy(gameObject);
         SceneManager.LoadScene(2);
 
